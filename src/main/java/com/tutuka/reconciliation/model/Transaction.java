@@ -4,19 +4,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Objects;
 
 @Data
 @NoArgsConstructor
-public class Transaction {
-    private String ProfileName;
-    private String TransactionDate;
-    private String TransactionAmount;
-    private String TransactionNarrative;
-    private String TransactionDescription;
+public class Transaction implements Comparable<Transaction> {
+    private String ProfileName = "";
+    private String TransactionDate = "";
+    private String TransactionAmount = "";
+    private String TransactionNarrative = "";
+    private String TransactionDescription = "";
     private BigInteger TransactionID;
-    private String TransactionType;
-    private String WalletReference;
+    private String TransactionType = "";
+    private String WalletReference = "";
+    private SuggestedTransaction suggested;
 
     public static String[] getHeaderColumns() {
         return new String[] {"ProfileName", "TransactionDate", "TransactionAmount",
@@ -45,5 +47,10 @@ public class Transaction {
         return Objects.hash(ProfileName, TransactionDate, TransactionAmount,
                 TransactionNarrative, TransactionDescription, TransactionID,
                 TransactionType, WalletReference);
+    }
+
+    @Override
+    public int compareTo(Transaction that) {
+        return this.getTransactionID().compareTo(that.getTransactionID());
     }
 }

@@ -2,7 +2,6 @@ package com.tutuka.reconciliation.controller;
 
 import com.tutuka.reconciliation.dto.GenericResponse;
 import com.tutuka.reconciliation.dto.ReconciliationResponse;
-import com.tutuka.reconciliation.model.Transaction;
 import com.tutuka.reconciliation.service.ReconciliationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -10,8 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @Slf4j
 @RestController

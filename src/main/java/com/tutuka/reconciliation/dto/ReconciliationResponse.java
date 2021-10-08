@@ -14,5 +14,4 @@ import java.util.Set;
 public class ReconciliationResponse {
     Records tutukaRecords;
     Records clientRecords;
-    List<Transaction> suggested;
 }

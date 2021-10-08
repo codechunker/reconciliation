@@ -1,8 +1,10 @@
 package com.tutuka.reconciliation.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class GenericResponse<T> {
     private static final long serialVersionUID = 1L;
     private String status;

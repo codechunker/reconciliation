@@ -1,13 +1,12 @@
 package com.tutuka.reconciliation.utils;
 
+import com.tutuka.reconciliation.model.SuggestedTransaction;
 import com.tutuka.reconciliation.model.Transaction;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -23,13 +22,13 @@ public class AppUtils {
 
     /**
      * extract transactions in file and store in memory for comparison with another file
-     * @param tutukaTempFile
+     * @param file
      */
-    public static HashMap<Integer, Transaction> extractTransactionsFromFile(File tutukaTempFile) {
+    public static HashMap<Integer, Transaction> extractTransactionsFromFile(File file) {
         tranMap.clear();
         duplicateMap.clear();
         try {
-            InputStream fileInputStream = new FileInputStream(tutukaTempFile);
+            InputStream fileInputStream = new FileInputStream(file);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
 
             tranMap = bufferedReader.lines().skip(1)//skip header
@@ -96,4 +95,74 @@ public class AppUtils {
             return transaction;
         }
     };
+
+    public static void suggestTransactions(List<Transaction> tran1, List<Transaction> tran2) {
+        Collections.sort(tran2);
+        for (Transaction transaction : tran1) {
+            //Search with TransactionID
+            if (transaction.getTransactionID() != null) {
+                SuggestedTransaction found = search(tran2, transaction, transaction.getTransactionID());
+                transaction.setSuggested(found);
+            }
+        }
+    }
+
+    private static SuggestedTransaction search(List<Transaction> transactions, Transaction transaction, BigInteger transactionID) {
+        int left = 0, right = transactions.size() - 1;
+
+        while (left <= right) {
+            int middle = left + (right - left) / 2;
+            Transaction foundTransaction = transactions.get(middle);
+            if (Objects.equals(foundTransaction.getTransactionID(), transactionID)) {
+                int score = score(transaction, foundTransaction);
+                return new SuggestedTransaction(foundTransaction, score);
+            }
+
+            if (transactions.get(middle).getTransactionID().compareTo(transactionID) < 0) {
+                left = middle + 1;
+            } else {
+                right = middle - 1;
+            }
+        }
+        return null;
+    }
+
+    private static int score(Transaction transaction, Transaction foundTransaction) {
+
+        int score = 0;
+        if (Objects.equals(transaction.getTransactionID(), foundTransaction.getTransactionID())) {
+            score += 25;
+
+        }
+
+        if (transaction.getWalletReference().equals(foundTransaction.getWalletReference())) {
+            score += 20;
+        }
+
+        if (transaction.getProfileName().equalsIgnoreCase(foundTransaction.getProfileName())) {
+            score += 15;
+        }
+
+        if (transaction.getTransactionAmount().equals(foundTransaction.getTransactionAmount())) {
+            score += 15;
+        }
+
+        if (transaction.getTransactionDate().equals(foundTransaction.getTransactionDate())) {
+            score += 10;
+        }
+
+        if (transaction.getTransactionType().equals(foundTransaction.getTransactionType())) {
+            score += 5;
+        }
+
+        if (transaction.getTransactionDescription().equalsIgnoreCase(foundTransaction.getTransactionDescription())) {
+            score += 5;
+        }
+
+        if (transaction.getTransactionNarrative().equalsIgnoreCase(foundTransaction.getTransactionNarrative())) {
+            score += 5;
+        }
+
+        return score;
+    }
 }

@@ -16,11 +16,10 @@ public class Mapper {
 
     public static ReconciliationResponse mapTransactionsToReconciled(int tutukaTranCount, int clientTranCount,
                                                                      List<Transaction> tutukaUnmatched,
-                                                                     List<Transaction> clientUnmatched,
-                                                                     List<Transaction> suggested) {
+                                                                     List<Transaction> clientUnmatched) {
         Records tutukaRecord = new Records(tutukaTranCount, tutukaTranCount - tutukaUnmatched.size(), tutukaUnmatched.size(), tutukaUnmatched);
         Records clientRecord = new Records(clientTranCount, clientTranCount - clientUnmatched.size(), clientUnmatched.size(), clientUnmatched);
 
-        return new ReconciliationResponse(tutukaRecord, clientRecord, suggested);
+        return new ReconciliationResponse(tutukaRecord, clientRecord);
     }
 }
