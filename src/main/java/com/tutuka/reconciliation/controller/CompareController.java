@@ -22,10 +22,10 @@ public class CompareController {
     }
 
     @PostMapping(value = "/compare", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(value = HttpStatus.CREATED)
+    @ResponseStatus(value = HttpStatus.OK)
     public ResponseEntity<?> compareTransactions(@RequestParam("tutukaFile")MultipartFile tutukaFile, @RequestParam("clientFile")MultipartFile clientFile ) {
         ReconciliationResponse reconciledTransactions = reconciliationService.compareTransactions(tutukaFile, clientFile);
-        return new ResponseEntity<>(new GenericResponse<>(HttpStatus.CREATED.getReasonPhrase(), "", reconciledTransactions), HttpStatus.CREATED);
+        return new ResponseEntity<>(new GenericResponse<>(HttpStatus.OK.getReasonPhrase(), "", reconciledTransactions), HttpStatus.CREATED);
     }
 
 }
