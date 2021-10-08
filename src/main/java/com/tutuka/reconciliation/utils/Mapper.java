@@ -14,12 +14,13 @@ public class Mapper {
         //DO NOT INITIALIZE
     }
 
-    public static ReconciliationResponse mapTransactionsToReconciled(Set<Transaction> tutukaTransactions, Set<Transaction> clientTransactions,
-                                                                     Set<Transaction> tutukaReconciled, Set<Transaction> clientReconciled,
-                                                                     Set<Transaction> suggested, String filePath) {
-        Records tutukaRecord = new Records(tutukaTransactions.size(), tutukaTransactions.size() - tutukaReconciled.size(), tutukaReconciled.size(), tutukaReconciled);
-        Records clientRecord = new Records(clientTransactions.size(), clientTransactions.size() - clientReconciled.size(), clientReconciled.size(), clientReconciled);
+    public static ReconciliationResponse mapTransactionsToReconciled(int tutukaTranCount, int clientTranCount,
+                                                                     List<Transaction> tutukaUnmatched,
+                                                                     List<Transaction> clientUnmatched,
+                                                                     List<Transaction> suggested) {
+        Records tutukaRecord = new Records(tutukaTranCount, tutukaTranCount - tutukaUnmatched.size(), tutukaUnmatched.size(), tutukaUnmatched);
+        Records clientRecord = new Records(clientTranCount, clientTranCount - clientUnmatched.size(), clientUnmatched.size(), clientUnmatched);
 
-        return new ReconciliationResponse(tutukaRecord, clientRecord, suggested, filePath);
+        return new ReconciliationResponse(tutukaRecord, clientRecord, suggested);
     }
 }

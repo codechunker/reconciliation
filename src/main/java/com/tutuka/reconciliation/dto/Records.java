@@ -15,5 +15,5 @@ public class Records {
     private int totalRecords;
     private int matchingRecords;
     private int unmatchedRecords;
-    private Set<Transaction> unmatchedTransactions;
+    private List<Transaction> unmatchedTransactions;
 }

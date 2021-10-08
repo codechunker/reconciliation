@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -13,6 +14,5 @@ import java.util.Set;
 public class ReconciliationResponse {
     Records tutukaRecords;
     Records clientRecords;
-    Set<Transaction> suggested;
-    String filePath;
+    List<Transaction> suggested;
 }
