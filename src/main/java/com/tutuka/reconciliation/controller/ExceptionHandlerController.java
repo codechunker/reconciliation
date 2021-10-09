@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartException;
 
 @Slf4j
 @ResponseBody
@@ -32,5 +33,12 @@ public class ExceptionHandlerController {
     public GenericResponse<?> handleBadRequestException(Exception e) {
         return new GenericResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), "An error occurred while processing your request"+
                 "Please contact server Administrator for more details", null);
+    }
+
+    @ExceptionHandler(MultipartException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public GenericResponse<?> handleMultiPartException(Exception e) {
+        return new GenericResponse<>(HttpStatus.BAD_REQUEST.getReasonPhrase(), "Current request is not a multipart request-You need a file", null);
     }
 }
