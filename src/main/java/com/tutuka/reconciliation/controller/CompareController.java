@@ -21,6 +21,7 @@ public class CompareController {
         this.reconciliationService = reconciliationService;
     }
 
+    @CrossOrigin //Just for Proof of concept. There are better ways
     @PostMapping(value = "/compare", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     public ResponseEntity<?> compareTransactions(@RequestParam("tutukaFile")MultipartFile tutukaFile, @RequestParam("clientFile")MultipartFile clientFile ) {
